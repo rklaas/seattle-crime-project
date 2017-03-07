@@ -11,13 +11,13 @@ ui <- fluidPage(
                    c('Elementary' = 'Elementary',
                      'Middle School' = 'Middle School',
                      'High School' = 'High School')),
-     
+      
       br(),
       
       sliderInput('School.Rank', label = 'School Rank',
-                   value = c(25, 75),
-                   min = 0,
-                   max = 100),
+                  value = c(25, 75),
+                  min = 0,
+                  max = 100),
       
       br(),
       
@@ -30,12 +30,12 @@ ui <- fluidPage(
       radioButtons(inputId = 'y.axis', label = 'Y-Axis Choices',
                    c('Percent Free/Discounted Lunch' = 'percent.free.disc.lunch',
                      'School Rank' = 'school.rank'))
-      ),
+    ),
     
     mainPanel( # sets the tabs in the main panel
       tabsetPanel(type = "tabs",
-                  tabPanel("Map", plotOutput("map")),
-                  tabPanel("Plots"), plotOutput('plots')
+                  tabPanel("Map", plotOutput("seattle_map")),
+                  tabPanel("Plots", plotOutput("seattle_plot"))
       )
     )
   )

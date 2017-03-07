@@ -1,8 +1,9 @@
-library(ggmap)
-library(shiny)
-library(ggplot2)
-library(dplyr)
-library(plotly)
+#install.packages("plotly")
+library("ggplot2")
+library("ggmap")
+library("shiny")
+library("dplyr")
+library("plotly")
 
 server <- function(input, output) {
   
@@ -10,13 +11,13 @@ server <- function(input, output) {
   
   
   # create map of seattle
-  map.seattle_city <- qmap("seattle", zoom = 11, source="stamen", maptype="toner",darken = c(.3,"#BBBBBB"))
-
+  seattle_map.seattle_city <- qmap("seattle", zoom = 11, source="stamen", maptype="toner",darken = c(.3,"#BBBBBB"))
+  
   # Combine the selected variables into a new data frame, for the graph
   selectedData <- reactive({
     df.public.schools[, c(input$x.axis, input$y.axis)]
   })
-
+  
   # For the map
   reactive.data <- reactive({
     filter(df.public.schools, input$school.type == TYPE) %>% 
@@ -26,14 +27,14 @@ server <- function(input, output) {
   # I dont know why I cant output the map to the map tab and the graph to the plot tab
   
   # plots the map of seattle
-  # output$map <- renderPlot({
-  #   reactive.data <- data.frame(reactive.data())
-  #   map.seattle_city +
-  #     geom_point(data = reactive.data, aes(x=Longitude, y=Latitude), color="dark green", size=1)
-  # })
+  output$seattle_map <- renderPlot({
+    reactive.data <- data.frame(reactive.data())
+    seattle_map.seattle_city +
+      geom_point(data = reactive.data, aes(x=Longitude, y=Latitude), color="dark green", size=1)
+  })
   
   # plots graph that the x and y axis can be changed
-  output$map <- renderPlot({ #switch to renderPlotly for plotly
+  output$seattle_plot <- renderPlot({ #switch to renderPlotly for plotly
     selectedData <- data.frame(selectedData())
     my.plot <- ggplot(data = selectedData, aes(x = selectedData[1], y = selectedData[2])) +
       geom_point() +
@@ -47,9 +48,9 @@ server <- function(input, output) {
     #gg <- plotly_build(my.plot)
     #renderPlotly(my.plot, env = parent.frame(), quoted = FALSE)
     #plot_ly(df.public.schools, x = ~percent.african.american, y = ~percent.free.disc.lunch)
-     
+    
   })
-
+  
 }
 
 #creates the server out of the server function
