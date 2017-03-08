@@ -46,12 +46,13 @@ server <- function(input, output) {
   # Plots graph, x and y axis can be changed
   output$seattle_plot <- renderPlotly({ 
     output$seattle_plot <- renderPlotly({
-      p <- ggplot(data = df.public.schools) +
-        geom_point(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key), text = SCHOOL)) +
-        geom_smooth(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key)), se = FALSE) +
-        labs(x = input$x.var.key, y = input$y.var.key)
-      
-      p <- ggplotly(p)
+      p <- plot_ly(df.public.schools, x = ~get(input$x.var.key), y = ~get(input$y.var.key), type = 'scatter', mode = 'markers',
+                   hoverinfo = 'text',
+                   alpha = 0.8,
+                   #color = ~get(input$y.var.key),
+                   text = ~paste('School: ', SCHOOL, 
+                                 '</br> X: ', get(input$x.var.key),
+                                 '</br> Y: ', get(input$y.var.key)))
       return(p)
     })
   })
