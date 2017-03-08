@@ -1,19 +1,19 @@
-library(shiny)
-library(leaflet)
+library("shiny")
+library("leaflet")
 
 
-ui <- fluidPage(
+ui <- fluidPage(theme = "bootstrap.min.css",
   titlePanel("School Data"), 
   
-  strong("Navigate through the report"),
+  h5("Navigate through the report"),
   
   column(12,p(HTML("<a href='#seattle_map'>View Map Data</a>"))),
   column(12,p(HTML("<a href='#seattle_plot'>View Plot Data</a>"))),
-  # column(12,p(HTML("<a href='#seattle_map'>View Map Data</a>"))),
+  column(12,p(HTML("<a href='#seattle_table'>View Summary Tables and Analysis</a> <br> "))),
   
-  h3(strong("Map Section")),
+  h3("Map Section"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -30,7 +30,7 @@ ui <- fluidPage(
       
       strong('Map Settings'),
       
-      checkboxInput("show.schools.key", "Show Schools?", TRUE),
+      checkboxInput("show.schools.key", "Show School Locations?", TRUE),
       checkboxInput("show.heatmap.key", "Show Heatmap?", TRUE),
       
       strong('Filter schools:'),
@@ -41,26 +41,23 @@ ui <- fluidPage(
       
       br(),
       
-      sliderInput('School.Rank', label = 'School Rank',
-                  value = c(0, 100),
-                  min = 0,
-                  max = 100),
-      
       sliderInput('african.american.percentage.key', label = '% of African American Students',
                   value = c(0, 100),
                   min = 0,
-                  max = 60)
+                  max = 60,
+                  step = 3,
+                  animate = animationOptions(interval = 1600))
     ),
     
     mainPanel( # sets the tabs in the main panel
-      plotOutput("seattle_map")
+      leafletOutput("seattle_map")
     )
     
   ),
   
-  h3(strong("Plot Section")),
+  h3("Plot Section"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -85,7 +82,34 @@ ui <- fluidPage(
     ),
     
     mainPanel( # sets the tabs in the main panel
-      plotOutput("seattle_plot")
+      #plotOutput("seattle_plot")
+    )
+  ),
+  
+  h3("Summary tables and worst schools analysis"),
+  
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space."),
+  
+  sidebarLayout(  # layout the page in two columns
+    sidebarPanel(  # specify content for the "sidebar" column
+      strong('Table settings')
+    ),
+    
+    mainPanel( # sets the tabs in the main panel
+      tabsetPanel(type = "tabs", 
+        tabPanel("Tables",
+          p("this is where the tables go")
+        )
+      )
     )
   )
 )
