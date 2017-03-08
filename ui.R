@@ -30,7 +30,7 @@ ui <- fluidPage(
       
       strong('Map Settings'),
       
-      checkboxInput("show.schools.key", "Show Schools?", TRUE),
+      checkboxInput("show.schools.key", "Show School Locations?", TRUE),
       checkboxInput("show.heatmap.key", "Show Heatmap?", TRUE),
       
       strong('Filter schools:'),
@@ -40,11 +40,6 @@ ui <- fluidPage(
       checkboxInput("high.key", "Highschools", TRUE),
       
       br(),
-      
-      sliderInput('School.Rank', label = 'School Rank',
-                  value = c(0, 100),
-                  min = 0,
-                  max = 100),
       
       sliderInput('african.american.percentage.key', label = '% of African American Students',
                   value = c(0, 100),
