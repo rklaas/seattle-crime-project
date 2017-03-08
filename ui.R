@@ -1,4 +1,6 @@
 library(shiny)
+library(leaflet)
+
 
 ui <- fluidPage(
   titlePanel("School Data"), 
@@ -47,9 +49,7 @@ ui <- fluidPage(
       sliderInput('african.american.percentage.key', label = '% of African American Students',
                   value = c(0, 100),
                   min = 0,
-                  max = 60),
-      
-      br()
+                  max = 60)
     ),
     
     mainPanel( # sets the tabs in the main panel
@@ -74,6 +74,8 @@ ui <- fluidPage(
   sidebarLayout(  # layout the page in two columns
     sidebarPanel(  # specify content for the "sidebar" column
       strong('Plot settings'),
+      
+      br(),
       
       selectInput("x.var.key", "X Axis:", selected = "% African American Students", 
                   c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch', "Pupil teacher ratio" = "pupilTeacherRatio")),

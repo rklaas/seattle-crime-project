@@ -1,9 +1,9 @@
 #install.packages("plotly")
 library("ggplot2")
-library("ggmap")
 library("shiny")
 library("dplyr")
 library("plotly")
+library("leaflet")
 
 df.public.schools <- read.csv("public_school_data_full.csv")
 
