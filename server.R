@@ -57,12 +57,13 @@ server <- function(input, output) {
     p <- plot_ly(filter(df.public.schools, !is.na(rankStatewidePercentage)), x = ~get(input$x.var.key), y = ~get(input$y.var.key), type = 'scatter', mode = 'markers',
                  hoverinfo = 'text',
                  alpha = 0.8,
+                 size = ~numberOfStudents,
                  #color = ~get(input$y.var.key),
                  text = ~paste0('School: ', SCHOOL, 
                                 '</br>', axis.names()[1], ': ', get(input$x.var.key),
-                                '</br>', axis.names()[2], ': ', get(input$y.var.key))) %>% 
-      layout(xaxis = list(title = axis.names()[1]),
-             yaxis = list(title = axis.names()[2]))
+                                '</br>', axis.names()[2], ': ', get(input$y.var.key),
+                                '</br> (School size:', numberOfStudents, ' students)')) %>% 
+      layout(xaxis = list(title = axis.names()[1]), yaxis = list(title = axis.names()[2]))
     
     
     p <- ggplotly(p)
