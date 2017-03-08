@@ -75,14 +75,14 @@ ui <- fluidPage(theme = "bootstrap.min.css",
       br(),
       
       selectInput("x.var.key", "X Axis:", selected = "% African American Students", 
-                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch', "Pupil teacher ratio" = "pupilTeacherRatio")),
+                  c("School Rank" = 'RankStatewidePercentage', "% African American Students" = 'PercentOfAfricanAmericanStudents', "% White Students" = 'PercentOfWhiteStudents', '% Free/Disc Lunch' = 'PercentFreeDiscLunch', "Pupil teacher ratio" = "PupilTeacherRatio")),
       
       selectInput("y.var.key", "Y Axis:",  selected = "School Rank", 
-                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch', "Pupil teacher ratio" = "pupilTeacherRatio"))
+                  c("School Rank" = 'RankStatewidePercentage', "% African American Students" = 'PercentOfAfricanAmericanStudents', "% White Students" = 'PercentOfWhiteStudents', '% Free/Disc Lunch' = 'PercentFreeDiscLunch', "Pupil teacher ratio" = "PupilTeacherRatio"))
     ),
     
     mainPanel( # sets the tabs in the main panel
-      #plotOutput("seattle_plot")
+      plotOutput("seattle_plot")
     )
   ),
   
