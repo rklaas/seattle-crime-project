@@ -35,11 +35,10 @@ server <- function(input, output) {
     
     
     #input$show.schools.key
-    if(input$show.schools.key){
-      m <- addCircles(m, lng=df.public.schools$Longitude, lat=df.public.schools$Latitude, weight = 0, radius = 50 + df.public.schools$numberOfStudents/20, 
-        popup = paste0(df.public.schools$schoolName, " (", df.public.schools$numberOfStudents, " students): ranked above ", df.public.schools$rankStatewidePercentage, "% of Seattle schools. (Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race. ", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)" ), 
-        fillOpacity = as.numeric(!is.na(match(df.public.schools$OBJECTID, public.schools.filtered()$OBJECTID))), color = "Grey")
-    }
+    m <- addCircles(m, lng=df.public.schools$Longitude, lat=df.public.schools$Latitude, weight = 0, radius = 50 + df.public.schools$numberOfStudents/20, 
+      popup = paste0(df.public.schools$schoolName, " (", df.public.schools$numberOfStudents, " students): ranked above ", df.public.schools$rankStatewidePercentage, "% of Seattle schools. (Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race. ", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)" ), 
+      fillOpacity = 0.8 * as.numeric(!is.na(match(df.public.schools$OBJECTID, public.schools.filtered()$OBJECTID)) & input$show.schools.key), #Rather than redraw points, just make unselected points (points not present in the filtered database) opaque; as.numeric(FALSE) = 0, AKA fully transluctent
+      color = "Grey")
     
     return(m)  # Print the map
   })

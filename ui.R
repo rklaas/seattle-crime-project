@@ -2,18 +2,18 @@ library("shiny")
 library("leaflet")
 
 
-ui <- fluidPage(#theme = "bootstrap.min.css",
+ui <- fluidPage(theme = "bootstrap.min.css",
   titlePanel("School Data"), 
   
-  strong("Navigate through the report"),
+  h5("Navigate through the report"),
   
   column(12,p(HTML("<a href='#seattle_map'>View Map Data</a>"))),
   column(12,p(HTML("<a href='#seattle_plot'>View Plot Data</a>"))),
-  column(12,p(HTML("<a href='#seattle_table'>View Summary Tables and Analysis</a>"))),
+  column(12,p(HTML("<a href='#seattle_table'>View Summary Tables and Analysis</a> <br> "))),
   
-  h3(strong("Map Section")),
+  h3("Map Section"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -45,8 +45,8 @@ ui <- fluidPage(#theme = "bootstrap.min.css",
                   value = c(0, 100),
                   min = 0,
                   max = 60,
-                  step = 2,
-                  animate=T)
+                  step = 3,
+                  animate = animationOptions(interval = 1600))
     ),
     
     mainPanel( # sets the tabs in the main panel
@@ -55,9 +55,9 @@ ui <- fluidPage(#theme = "bootstrap.min.css",
     
   ),
   
-  h3(strong("Plot Section")),
+  h3("Plot Section"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -86,9 +86,9 @@ ui <- fluidPage(#theme = "bootstrap.min.css",
     )
   ),
   
-  h3(strong("Summary tables and worst schools analysis")),
+  h3("Summary tables and worst schools analysis"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
