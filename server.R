@@ -37,8 +37,8 @@ server <- function(input, output) {
     #input$show.schools.key
     if(input$show.schools.key){
       m <- addCircles(m, lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = 50 + public.schools.map.data$numberOfStudents/20, 
-        popup = paste0(public.schools.map.data$schoolName, " (", public.schools.map.data$numberOfStudents, " students): ranked above ", public.schools.map.data$rankStatewidePercentage, "% of Seattle schools. (Demographics: ", public.schools.map.data$percentofWhiteStudents, "% White, ", public.schools.map.data$percentofAfricanAmericanStudents, "% African American, ", public.schools.map.data$percentofAsianStudents, "% Asian, ", public.schools.map.data$percentofHispanicStudents, "% Hispanic, and ", public.schools.map.data$percentofTwoOrMoreRaceStudents, "% Mixed Race. ", public.schools.map.data$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)" ), 
-        fillOpacity = 0.8, color = "Grey")
+                      popup = paste0(public.schools.map.data$schoolName, " (", public.schools.map.data$numberOfStudents, " students): ranked above ", public.schools.map.data$rankStatewidePercentage, "% of Seattle schools. (Demographics: ", public.schools.map.data$percentofWhiteStudents, "% White, ", public.schools.map.data$percentofAfricanAmericanStudents, "% African American, ", public.schools.map.data$percentofAsianStudents, "% Asian, ", public.schools.map.data$percentofHispanicStudents, "% Hispanic, and ", public.schools.map.data$percentofTwoOrMoreRaceStudents, "% Mixed Race. ", public.schools.map.data$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)" ), 
+                      fillOpacity = 0.8, color = "Grey")
     }
     
     return(m)  # Print the map
@@ -49,8 +49,43 @@ server <- function(input, output) {
     #Add Plotly code in here
   })
   
+  
+  # renders table to display specified statistics
+  inputs <- reactive({
+    input$elem.key.table
+    input$middle.key.table
+    input$high.key.table
+    input$african.american.percentage.key.table
+    input$rank.key.table
+  })
+  
   output$seattle_table <- renderTable({
-    #Add Table code in here
+    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+                                      percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
+      filter((schoolLevel == "Elementary" & input$elem.key.table) | 
+               (schoolLevel == "Middle" & input$middle.key.table) | 
+               (schoolLevel == "High" & input$high.key.table)) %>%
+      filter(input$african.american.percentage.key.table[1] <= percentofAfricanAmericanStudents & 
+               input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
+      filter(input$rank.key.table[1] <= rankStatewidePercentage & 
+               input$rank.key.table[2] >= rankStatewidePercentage)
+    return(df.public.schools.table)
+    
+  })
+  
+  output$school_avg_rank <- renderText({
+    # average rank of schools and test scores
+    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+                                      percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
+      filter((schoolLevel == "Elementary" & input$elem.key.table) | 
+               (schoolLevel == "Middle" & input$middle.key.table) | 
+               (schoolLevel == "High" & input$high.key.table)) %>%
+      filter(input$african.american.percentage.key.table[1] <= percentofAfricanAmericanStudents & 
+               input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
+      filter(input$rank.key.table[1] <= rankStatewidePercentage & 
+               input$rank.key.table[2] >= rankStatewidePercentage)
+    return(mean(df.public.schools.table[,7], na.rm = TRUE))
+    
   })
   
 }

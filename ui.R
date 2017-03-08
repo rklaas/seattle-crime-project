@@ -100,12 +100,30 @@ ui <- fluidPage(
   
   sidebarLayout(  # layout the page in two columns
     sidebarPanel(  # specify content for the "sidebar" column
-      strong('Table settings')
+      strong('Table settings'),
+      #Include tables and summary data
+      strong('Filter schools:'),
+      
+      checkboxInput("elem.key.table", "Elementary Schools", TRUE),
+      checkboxInput("middle.key.table", "Middle Schools", TRUE),
+      checkboxInput("high.key.table", "Highschools", TRUE),
+      
+      sliderInput('african.american.percentage.key.table', label = '% of African American Students',
+                  value = c(0, 100),
+                  min = 0,
+                  max = 60),
+      
+      h1("Average school rank: "), h1(textOutput("school_avg_rank")),
+      
+      sliderInput('rank.key.table', label = 'School Rank',
+                  value = c(0, 100),
+                  min = 0,
+                  max = 100)
     ),
     
     mainPanel( # sets the tabs in the main panel
-
-      #Include tables and summary data
+      
+      tableOutput("seattle_table")
 
     )
     
