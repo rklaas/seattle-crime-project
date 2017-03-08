@@ -58,10 +58,10 @@ server <- function(input, output) {
                  hoverinfo = 'text',
                  alpha = 0.8,
                  size = ~numberOfStudents,
-                 #color = ~get(input$y.var.key),
+                 color = ~get(input$color.key),
                  text = ~paste0('School: ', SCHOOL, 
-                                '</br>', axis.names()[1], ': ', get(input$x.var.key),
-                                '</br>', axis.names()[2], ': ', get(input$y.var.key),
+                                '</br>', axis.names()[1], ': ', get(input$x.var.key), "%" , 
+                                '</br>', axis.names()[2], ': ', get(input$y.var.key), "%" ,
                                 '</br> (School size:', numberOfStudents, ' students)')) %>% 
       layout(xaxis = list(title = axis.names()[1]), yaxis = list(title = axis.names()[2]))
     
