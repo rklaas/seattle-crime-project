@@ -1,5 +1,5 @@
-library(shiny)
-library(leaflet)
+library("shiny")
+library("leaflet")
 
 
 ui <- fluidPage(
@@ -53,7 +53,7 @@ ui <- fluidPage(
     ),
     
     mainPanel( # sets the tabs in the main panel
-      plotOutput("seattle_map")
+      leafletOutput("seattle_map")
     )
     
   ),
