@@ -9,7 +9,7 @@ ui <- fluidPage(
   
   column(12,p(HTML("<a href='#seattle_map'>View Map Data</a>"))),
   column(12,p(HTML("<a href='#seattle_plot'>View Plot Data</a>"))),
-  # column(12,p(HTML("<a href='#seattle_map'>View Map Data</a>"))),
+  column(12,p(HTML("<a href='#seattle_table'>View Summary Tables and Analysis</a>"))),
   
   h3(strong("Map Section")),
   
@@ -80,7 +80,30 @@ ui <- fluidPage(
     ),
     
     mainPanel( # sets the tabs in the main panel
-      plotOutput("seattle_plot")
+      #plotOutput("seattle_plot")
+    )
+  ),
+  
+  h3(strong("Summary tables and worst schools analysis")),
+  
+  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+     Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space."),
+  
+  sidebarLayout(  # layout the page in two columns
+    sidebarPanel(  # specify content for the "sidebar" column
+      strong('Table settings')
+    ),
+    
+    mainPanel( # sets the tabs in the main panel
+      #Include tables and summary data
     )
   )
 )

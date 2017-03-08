@@ -15,7 +15,7 @@ server <- function(input, output) {
       filter(input$african.american.percentage.key[1] <= percentofAfricanAmericanStudents & input$african.american.percentage.key[2] >= percentofAfricanAmericanStudents) 
   })
   
-  pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 8)
+  pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 7)
   
   # plots the map of seattle
   output$seattle_map <- renderLeaflet({
@@ -36,8 +36,8 @@ server <- function(input, output) {
     
     #input$show.schools.key
     if(input$show.schools.key){
-      m <- addCircles(m, lng=df.public.schools$Longitude, lat=df.public.schools$Latitude, weight = 0, radius = 50 + df.public.schools$numberOfStudents/20, 
-        popup = paste0(df.public.schools$schoolName, " (", df.public.schools$numberOfStudents, " students): ranked above ", df.public.schools$rankStatewidePercentage, "% of Seattle schools. (Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race. ", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)" ), 
+      m <- addCircles(m, lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = 50 + public.schools.map.data$numberOfStudents/20, 
+        popup = paste0(public.schools.map.data$schoolName, " (", public.schools.map.data$numberOfStudents, " students): ranked above ", public.schools.map.data$rankStatewidePercentage, "% of Seattle schools. (Demographics: ", public.schools.map.data$percentofWhiteStudents, "% White, ", public.schools.map.data$percentofAfricanAmericanStudents, "% African American, ", public.schools.map.data$percentofAsianStudents, "% Asian, ", public.schools.map.data$percentofHispanicStudents, "% Hispanic, and ", public.schools.map.data$percentofTwoOrMoreRaceStudents, "% Mixed Race. ", public.schools.map.data$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)" ), 
         fillOpacity = 0.8, color = "Grey")
     }
     
@@ -47,6 +47,10 @@ server <- function(input, output) {
   # plots graph that the x and y axis can be changed
   output$seattle_plot <- renderPlotly({ 
     #Add Plotly code in here
+  })
+  
+  output$seattle_table <- renderTable({
+    #Add Table code in here
   })
   
 }
