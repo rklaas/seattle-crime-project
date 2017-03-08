@@ -82,7 +82,7 @@ ui <- fluidPage(theme = "bootstrap.min.css",
     ),
     
     mainPanel( # sets the tabs in the main panel
-      #plotOutput("seattle_plot")
+      plotlyOutput("seattle_plot")
     )
   ),
   

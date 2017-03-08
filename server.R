@@ -43,9 +43,17 @@ server <- function(input, output) {
     return(m)  # Print the map
   })
   
-  # plots graph that the x and y axis can be changed
+  # Plots graph, x and y axis can be changed
   output$seattle_plot <- renderPlotly({ 
-    #Add Plotly code in here
+    output$seattle_plot <- renderPlotly({
+      p <- ggplot(data = df.public.schools) +
+        geom_point(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key), text = SCHOOL)) +
+        geom_smooth(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key)), se = FALSE) +
+        labs(x = input$x.var.key, y = input$y.var.key)
+      
+      p <- ggplotly(p)
+      return(p)
+    })
   })
   
   output$seattle_table <- renderTable({
