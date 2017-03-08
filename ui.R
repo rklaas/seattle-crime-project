@@ -2,7 +2,7 @@ library("shiny")
 library("leaflet")
 
 
-ui <- fluidPage(
+ui <- fluidPage(#theme = "bootstrap.min.css",
   titlePanel("School Data"), 
   
   strong("Navigate through the report"),
@@ -44,7 +44,9 @@ ui <- fluidPage(
       sliderInput('african.american.percentage.key', label = '% of African American Students',
                   value = c(0, 100),
                   min = 0,
-                  max = 60)
+                  max = 60,
+                  step = 2,
+                  animate=T)
     ),
     
     mainPanel( # sets the tabs in the main panel
@@ -103,7 +105,11 @@ ui <- fluidPage(
     ),
     
     mainPanel( # sets the tabs in the main panel
-      #Include tables and summary data
+      tabsetPanel(type = "tabs", 
+        tabPanel("Tables",
+          p("this is where the tables go")
+        )
+      )
     )
   )
 )
