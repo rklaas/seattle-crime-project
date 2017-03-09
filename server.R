@@ -42,7 +42,7 @@ server <- function(input, output) {
     #input$show.schools.key
 
     m <- addCircles(m, lng=df.public.schools$Longitude, lat=df.public.schools$Latitude, weight = 0, radius = 50 + df.public.schools$numberOfStudents/20, 
-                    popup = paste0("<b>", df.public.schools$schoolName, "</b> (", df.public.schools$numberOfStudents, " students): </br>-Ranked above ", df.public.schools$rankStatewidePercentage, "% of Seattle schools. </br>-", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)",  "</br></br>(Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race)"), 
+                    popup = paste0("<b>", df.public.schools$schoolName, "</b> (", df.public.schools$numberOfStudents, " students): </br>-Ranked above ", df.public.schools$rankStatewidePercentage, "% of Washington schools. </br>-", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)",  "</br></br>(Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race)"), 
                     fillOpacity = 0.8 * as.numeric(!is.na(match(df.public.schools$OBJECTID, public.schools.filtered()$OBJECTID)) & input$show.schools.key), #Rather than redraw points, just make unselected points (points not present in the filtered database) opaque; as.numeric(FALSE) = 0, AKA fully transluctent
                     color = "Grey")
     
@@ -51,7 +51,7 @@ server <- function(input, output) {
   
   # nice looking axes names for the plot
   axis.names <- reactive({
-    axis.names.list <- list("rankStatewidePercentage" = "% of Seattle Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofHispanicStudents' = "% Hispanic Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
+    axis.names.list <- list("rankStatewidePercentage" = "% of Washington Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofHispanicStudents' = "% Hispanic Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
     
     x.name <- axis.names.list[[input$x.var.key]]
     y.name <- axis.names.list[[input$y.var.key]]
@@ -135,6 +135,7 @@ server <- function(input, output) {
     return(paste0(mean(df.public.schools.table[,4], trim = 0.5, na.rm = TRUE), "%"))
   })
   
+  #Creates a text output of Rainier Beach statistics for use with the conclusion
   output$insights <- renderText({
     insight.text <- paste0("Rainier Beach stood out in particular, with a student body of ", df.public.schools[8,39], " students, ranking above only ", df.public.schools[8,60], "% of Washington schools. What makes Rainier Beach peculiar though is its incredibly high % of African Americans (", df.public.schools[8,41], "% African American), and a student population largely on free and reduced lunch (", df.public.schools[8,40], "% of the student body)."  )
     return(insight.text)
