@@ -109,34 +109,40 @@ ui <- fluidPage(theme = "bootstrap.min.css",
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space."),
   
   sidebarLayout(  # layout the page in two columns
-    sidebarPanel(  # specify content for the "sidebar" column
+    sidebarPanel(  
+      # specify content for the "sidebar" column
       strong('Table settings'),
+      
       #Include tables and summary data
       strong('Filter schools:'),
       
+      # checkbox filters for viewing a certain type of school
       checkboxInput("elem.key.table", "Elementary Schools", TRUE),
       checkboxInput("middle.key.table", "Middle Schools", TRUE),
       checkboxInput("high.key.table", "Highschools", TRUE),
       
+      # slider to alter min and max percent of african american students in the schools viewed in the table
       sliderInput('african.american.percentage.key.table', label = '% of African American Students',
                   value = c(0, 100),
                   min = 0,
                   max = 60),
       
-      h1("Average school rank: "), h1(textOutput("school_avg_rank")),
+      # displays average school rank
+      h4("Average school rank: "), h4(textOutput("school_avg_rank")),
       
+      # slider to adjust the min and max rank of the schools viewed in the table
       sliderInput('rank.key.table', label = 'School Rank',
                   value = c(0, 100),
                   min = 0,
-                  max = 100)
+                  max = 100),
+      
+      # displays the average percent of free and discount lunches offered at the schools viewed in the table
+      h4("Average percent of free and discount lunch: "), h4(textOutput("school_avg_pfdl"))
     ),
     
-    mainPanel( # sets the tabs in the main panel
-
-      
+    mainPanel( 
+      # sets the tabs in the main panel
       tableOutput("seattle_table")
-
-
     )
     
   )

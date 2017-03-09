@@ -78,8 +78,7 @@ test <- df.public.schools %>%
     return(p)
   })
   
-  
-  # renders table to display specified statistics
+  # variable inputs which alter the outputs below
   inputs <- reactive({
     input$elem.key.table
     input$middle.key.table
@@ -88,8 +87,9 @@ test <- df.public.schools %>%
     input$rank.key.table
   })
   
+  # creates table to display filtered by input sliders and checkboxes
   output$seattle_table <- renderTable({
-
+    #selects appropriate filters and filter specified columns by the values in the input sliders
     df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
                                       percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
       filter((schoolLevel == "Elementary" & input$elem.key.table) | 
@@ -103,8 +103,9 @@ test <- df.public.schools %>%
     
   })
   
+  # returns the average rank of all of the selected schools
   output$school_avg_rank <- renderText({
-    # average rank of schools and test scores
+    #selects appropriate filters and filter specified columns by the values in the input sliders
     df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
                                       percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
       filter((schoolLevel == "Elementary" & input$elem.key.table) | 
@@ -115,6 +116,21 @@ test <- df.public.schools %>%
       filter(input$rank.key.table[1] <= rankStatewidePercentage & 
                input$rank.key.table[2] >= rankStatewidePercentage)
     return(mean(df.public.schools.table[,7], na.rm = TRUE))
+  })
+  
+  # returns the average percent of free and reduced lunches for all selected schools
+  output$school_avg_pfdl <- renderText({
+    #selects appropriate filters and filter specified columns by the values in the input sliders
+    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+                                      percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
+      filter((schoolLevel == "Elementary" & input$elem.key.table) | 
+               (schoolLevel == "Middle" & input$middle.key.table) | 
+               (schoolLevel == "High" & input$high.key.table)) %>%
+      filter(input$african.american.percentage.key.table[1] <= percentofAfricanAmericanStudents & 
+               input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
+      filter(input$rank.key.table[1] <= rankStatewidePercentage & 
+               input$rank.key.table[2] >= rankStatewidePercentage)
+    return(mean(df.public.schools.table[,4], na.rm = TRUE))
   })
 
 #    zip.summaries <- df.public.schools %>%
