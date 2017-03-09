@@ -2,7 +2,7 @@ library("shiny")
 library("leaflet")
 library("plotly")
 
-ui <- navbarPage("School Report",
+ui <- navbarPage("School Report", selected = 'Map',
                  tabPanel('Introduction',
                           h1('AA'),
                           p('Insert Introduction')
