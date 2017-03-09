@@ -1,3 +1,4 @@
+#install.packages("plotly")
 library("ggplot2")
 library("shiny")
 library("dplyr")
