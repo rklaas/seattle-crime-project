@@ -12,13 +12,13 @@ server <- function(input, output) {
   public.schools.filtered <- reactive({
     df.schools.searched <- df.public.schools[grep(tolower(input$school.search.key), tolower(df.public.schools$NAME)),] %>% #Look up schools with matching strings
       filter((schoolLevel == "Elementary" & input$elem.key) | (schoolLevel == "Middle" & input$middle.key) | (schoolLevel == "High" & input$high.key)) %>% #Filter by school level
-      filter(input$free.reduced.lunch.percentage.key[1] <= percentFreeDiscLunch & input$free.reduced.lunch.percentage.key[2] >= percentFreeDiscLunch) #Fiter by # of African Americans
+      filter(input$free.reduced.lunch.percentage.key[1] <= percentFreeDiscLunch & input$free.reduced.lunch.percentage.key[2] >= percentFreeDiscLunch) %>%  #Fiter by % of Free/Reduced lunch students
+      filter(input$african.american.percentage.key[1] <= percentofAfricanAmericanStudents & input$african.american.percentage.key[2] >= percentofAfricanAmericanStudents) #Filter by % of African American Students
     
     return(df.schools.searched)
   })
 
-  #7 cuts
-  pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 4)
+  pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 4) #creating a palette for the map
   
   # plots the map of seattle
   output$seattle_map <- renderLeaflet({
@@ -117,7 +117,7 @@ server <- function(input, output) {
                input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
       filter(input$rank.key.table[1] <= rankStatewidePercentage & 
                input$rank.key.table[2] >= rankStatewidePercentage)
-    return(round(mean(df.public.schools.table[,7], na.rm = TRUE))) 
+    return(paste0(mean(df.public.schools.table[,7], trim = 0.5, na.rm = TRUE), "%")) 
   })
   
   # returns the average percent of free and reduced lunches for all selected schools
@@ -132,7 +132,12 @@ server <- function(input, output) {
                input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
       filter(input$rank.key.table[1] <= rankStatewidePercentage & 
                input$rank.key.table[2] >= rankStatewidePercentage)
-    return(round(mean(df.public.schools.table[,4], na.rm = TRUE)))
+    return(paste0(mean(df.public.schools.table[,4], trim = 0.5, na.rm = TRUE), "%"))
+  })
+  
+  output$insights <- renderText({
+    insight.text <- paste0("Rainier Beach stood out in particular, with a student body of ", df.public.schools[8,39], " students, ranking above only ", df.public.schools[8,60], "% of Washington schools. What makes Rainier Beach peculiar though is its incredibly high % of African Americans (", df.public.schools[8,41], "% African American), and a student population largely on free and reduced lunch (", df.public.schools[8,40], "% of the student body)."  )
+    return(insight.text)
   })
 }
 
