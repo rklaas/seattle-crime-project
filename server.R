@@ -54,7 +54,7 @@ server <- function(input, output) {
   })
   
   axis.names <- reactive({
-    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofHispanicStudents' = "% Hispanic Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
+    axis.names.list <- list("rankStatewidePercentage" = "% of Seattle Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofHispanicStudents' = "% Hispanic Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
     
     x.name <- axis.names.list[[input$x.var.key]]
     y.name <- axis.names.list[[input$y.var.key]]

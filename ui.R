@@ -4,8 +4,10 @@ library("plotly")
 
 ui <- navbarPage("School Report",
                  tabPanel('Introduction',
-                          h1('AA'),
-                          p('Insert Introduction')
+                          h1('Segregated Seatte:'),
+                          h4('Mapping Racial Inequalities With Seattle Schools Data'),
+                          p('This project started as an exploration of the relation between crime rates in Seattle and the quality of schools in areas affected by crime. In exploring the data, we quickly discovered strong correlations between racial demographics in Seattle schools and their respective test scores, prompting further exploration. Soon, we decided to map the data, discovering a strong divide between North and South Seattle school rankings.'),
+                          p("")
                  ),
                  tabPanel("Map",
                           
