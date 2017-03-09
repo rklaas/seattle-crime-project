@@ -115,8 +115,10 @@ ui <- navbarPage("School Report", selected = 'Map',
                  tabPanel('Conclusion',
                           p('From each tab of this report we have learned that certain schools are not being treated with the care that they deserve. From the map tab, we can see that the southern region including South Shore and Rainier Beach in particular stands out an extreme pocket of low-quality schools and poverty based on the low school ranks and high percent of students on free or discounted lunch. '),
                           p('From the plot tab, we can see a strong negative correlation between poor schools and high percentage of African American students, this shows the failure to provide good schools to certain areas affects certain populations of people more than others which we cannot stand for as Americans.'),
-                          p('With this data we must inform our government that we will not allow certain areas to be forgotten about and that the schools that are being left behind creates an environment where groups that might already be oppressed to be further oppressed.')
-                 )
+                          p('With this data we must inform our government that we will not allow certain areas to be forgotten about and that the schools that are being left behind creates an environment where groups that might already be oppressed to be further oppressed.'),
+                          a("More funding needed to ensure Rainier Beach High School's success", href = "http://www.seattletimes.com/opinion/editorials/more-funding-needed-to-ensure-rainier-beach-high-schools-success/"),
+                          p('The above article talks about how Rainier Beach which is a poster child for the mistreated schools that we are examining can be fixed. The article shows that after some investment the stats for the school have been improving. So, if keep awareness up about other schools like Rainier Beach we should be able to secure funding to help these schools improve.')
+                          )
 )
 
 shinyUI(ui)
