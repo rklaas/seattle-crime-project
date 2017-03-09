@@ -48,7 +48,7 @@ ui <- navbarPage("Segregated Seattle", selected = 'Map',
                                           max = 85,
                                           step = 3,
                                           animate = animationOptions(interval = 1600)),
-
+                              
                               textInput("school.search.key", label = "Search for a school", value = "")
                               
                               #Search for a school
@@ -84,10 +84,28 @@ ui <- navbarPage("Segregated Seattle", selected = 'Map',
                           )
                  ), 
                  tabPanel('Table',
-                          h1('Exploring the Data:'),
-                          p('Presented below is the full dataset used for generating the maps and plots, in a fiterable table. Schools can be filtered by rank and % of African American students; below each slider is an average for school data that correlates heavily with that slider. In addition, elementary/middle/high schools can be filtered through to demonstrate that racial divides in school quality are present across all school levels in Seattle'),
+                          h1('Summary Statistics Used For Analysis'),
                           
+                          p('This interactive table provides a adjustable view for users to read the data from the Seattle 
+                              Schools dataset. Users are able to customize the column valuesbased on a variety of variables 
+                              (whether or not the school is an elementary, middle, or high school, % of African American Students,
+                              and school rank).'),
+                          
+                          p('From the table we can see that as the percent of African American students increase, the average school
+                              rank decreases. For example when the range is set between 0% and 10% the schools are, on average, better
+                              than 83% of other schools. Alternatively, when the percent is set between 50 and 60% the the schools are, 
+                              on average, better than only 25% of other schools. You can also see a drastic change in the number of free
+                              and discounted lunches where schools with between 0% and 10% African American students have an, on average
+                              15% of students receiving free or discounted lunches compared to 72% of students receiving free or discounted
+                              lunches in schools with between 50 and 60% African American students. Again, here there is a clear 
+                              correlation between % African Americans and % Free/Discounted lunch suggesting that these students are placed
+                              into poorly performing schools which may come as a result of poverty/low-income in the student body and 
+                              their families.'),
+
                           sidebarLayout(  # layout the page in two columns
+                            
+                            
+                            
                             sidebarPanel(  
                               # specify content for the "sidebar" column
                               strong('Table settings'),
@@ -114,7 +132,7 @@ ui <- navbarPage("Segregated Seattle", selected = 'Map',
                                           value = c(0, 100),
                                           min = 0,
                                           max = 100),
-
+                              
                               # displays the average percent of free and discount lunches offered at the schools viewed in the table
                               h4(em("Average percent of free and discount lunch: ")), h4(textOutput("school_avg_pfdl"))
                             ),
