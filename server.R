@@ -1,4 +1,3 @@
-#install.packages("plotly")
 library("ggplot2")
 library("shiny")
 library("dplyr")
@@ -17,10 +16,7 @@ server <- function(input, output) {
     
     return(df.schools.searched)
   })
-  
-  test <- df.public.schools %>% 
-    filter(SCHOOL, contains("g"))
-  
+
   #7 cuts
   pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 4)
   
@@ -53,6 +49,7 @@ server <- function(input, output) {
     return(m)  # Print the map
   })
   
+  # nice looking axes names for the plot
   axis.names <- reactive({
     axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofHispanicStudents' = "% Hispanic Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
     
