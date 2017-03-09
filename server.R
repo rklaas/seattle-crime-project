@@ -21,23 +21,25 @@ server <- function(input, output) {
   test <- df.public.schools %>% 
     filter(SCHOOL, contains("g"))
   
-  
-  pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 7)
+  #7 cuts
+  pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 4)
   
   # plots the map of seattle
   output$seattle_map <- renderLeaflet({
-    public.schools.map.data <- public.schools.filtered()
+    public.schools.map.data <- public.schools.filtered() %>% 
+      filter(NAME != "Roosevelt") #Rendering roosevelt makes the map unreadable, exclude it in the heatmap
     m <- leaflet() %>%
       addProviderTiles(providers$CartoDB.Positron) #Add B/W Map in background
     
     #input$show.heatmap.key
     if(input$show.heatmap.key){
       m <- m %>% 
-        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents* 3, fillOpacity = 0.1, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
-        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents* 2, fillOpacity = 0.1, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
-        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents, fillOpacity = 0.1, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
-        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents/2, fillOpacity = 0.1, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
-        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents/3, fillOpacity = 0.1, color = pal(public.schools.map.data$rankStatewidePercentage)) 
+        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents* 3, fillOpacity = 0.037, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
+        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents* 2, fillOpacity = 0.037, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
+        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents, fillOpacity = 0.074, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
+        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents/2, fillOpacity = 0.074, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
+        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents/4, fillOpacity = 0.0925, color = pal(public.schools.map.data$rankStatewidePercentage)) %>% 
+        addCircles(lng=public.schools.map.data$Longitude, lat=public.schools.map.data$Latitude, weight = 0, radius = public.schools.map.data$numberOfStudents/7, fillOpacity = 0.185, color = pal(public.schools.map.data$rankStatewidePercentage)) 
     }
     
     
@@ -47,11 +49,12 @@ server <- function(input, output) {
                     popup = paste0("<b>", df.public.schools$schoolName, "</b> (", df.public.schools$numberOfStudents, " students): </br>-Ranked above ", df.public.schools$rankStatewidePercentage, "% of Seattle schools. </br>-", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)",  "</br></br>(Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race)"), 
                     fillOpacity = 0.8 * as.numeric(!is.na(match(df.public.schools$OBJECTID, public.schools.filtered()$OBJECTID)) & input$show.schools.key), #Rather than redraw points, just make unselected points (points not present in the filtered database) opaque; as.numeric(FALSE) = 0, AKA fully transluctent
                     color = "Grey")
+    
     return(m)  # Print the map
   })
   
   axis.names <- reactive({
-    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
+    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofHispanicStudents' = "% Hispanic Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
     
     x.name <- axis.names.list[[input$x.var.key]]
     y.name <- axis.names.list[[input$y.var.key]]
@@ -68,7 +71,7 @@ server <- function(input, output) {
                  text = ~paste0('School: ', SCHOOL, 
                                 '</br>', axis.names()[1], ': ', get(input$x.var.key), "%" , 
                                 '</br>', axis.names()[2], ': ', get(input$y.var.key), "%" ,
-                                '</br> (School size:', numberOfStudents, ' students)')) %>% 
+                                '</br>(School size:', numberOfStudents, ' students)')) %>% 
       layout(xaxis = list(title = axis.names()[1]), yaxis = list(title = axis.names()[2]))
     
     
@@ -86,9 +89,10 @@ server <- function(input, output) {
   })
   
   # creates table to display filtered by input sliders and checkboxes
-  output$seattle_table <- renderTable({
+  output$seattle_table <- renderDataTable({
+    
     #selects appropriate filters and filter specified columns by the values in the input sliders
-    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+    df.public.schools.table <- select(df.public.schools, NAME, ZIP, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
                                       percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
       filter((schoolLevel == "Elementary" & input$elem.key.table) | 
                (schoolLevel == "Middle" & input$middle.key.table) | 
@@ -97,6 +101,9 @@ server <- function(input, output) {
                input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
       filter(input$rank.key.table[1] <= rankStatewidePercentage & 
                input$rank.key.table[2] >= rankStatewidePercentage)
+    
+    colnames(df.public.schools.table) <- c("School", "ZIP", "Type", "# of Students", "% Free/Reduced Lunch Students", "% of African Americans", "Students per Teacher", "School Ranking (out of 100)")
+    
     return(df.public.schools.table)
     
   })
@@ -113,7 +120,7 @@ server <- function(input, output) {
                input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
       filter(input$rank.key.table[1] <= rankStatewidePercentage & 
                input$rank.key.table[2] >= rankStatewidePercentage)
-    return(mean(df.public.schools.table[,7], na.rm = TRUE)) 
+    return(round(mean(df.public.schools.table[,7], na.rm = TRUE))) 
   })
   
   # returns the average percent of free and reduced lunches for all selected schools
@@ -128,13 +135,8 @@ server <- function(input, output) {
                input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
       filter(input$rank.key.table[1] <= rankStatewidePercentage & 
                input$rank.key.table[2] >= rankStatewidePercentage)
-    return(mean(df.public.schools.table[,4], na.rm = TRUE))
+    return(round(mean(df.public.schools.table[,4], na.rm = TRUE)))
   })
-
-#    zip.summaries <- df.public.schools %>%
-#      group_by(ZIP) %>% 
-#      summarise(round(mean(rankStatewidePercentage, na.rm = TRUE)), round(mean(percentofAfricanAmericanStudents)), mean(percentFreeDiscLunch), round(mean(percentofWhiteStudents)))
-
 }
 
 #creates the server out of the server function
