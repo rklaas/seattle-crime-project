@@ -42,11 +42,11 @@ server <- function(input, output) {
     
     
     #input$show.schools.key
+
     m <- addCircles(m, lng=df.public.schools$Longitude, lat=df.public.schools$Latitude, weight = 0, radius = 50 + df.public.schools$numberOfStudents/20, 
                     popup = paste0("<b>", df.public.schools$schoolName, "</b> (", df.public.schools$numberOfStudents, " students): </br>-Ranked above ", df.public.schools$rankStatewidePercentage, "% of Seattle schools. </br>-", df.public.schools$percentFreeDiscLunch, "% of students at this school are on free/discounted lunch)",  "</br></br>(Demographics: ", df.public.schools$percentofWhiteStudents, "% White, ", df.public.schools$percentofAfricanAmericanStudents, "% African American, ", df.public.schools$percentofAsianStudents, "% Asian, ", df.public.schools$percentofHispanicStudents, "% Hispanic, and ", df.public.schools$percentofTwoOrMoreRaceStudents, "% Mixed Race)"), 
                     fillOpacity = 0.8 * as.numeric(!is.na(match(df.public.schools$OBJECTID, public.schools.filtered()$OBJECTID)) & input$show.schools.key), #Rather than redraw points, just make unselected points (points not present in the filtered database) opaque; as.numeric(FALSE) = 0, AKA fully transluctent
                     color = "Grey")
-    
     return(m)  # Print the map
   })
   
@@ -76,12 +76,65 @@ server <- function(input, output) {
     return(p)
   })
   
-  output$seattle_table <- renderTable({
-    zip.summaries <- df.public.schools %>%
-      group_by(ZIP) %>% 
-      summarise(round(mean(rankStatewidePercentage, na.rm = TRUE)), round(mean(percentofAfricanAmericanStudents)), mean(percentFreeDiscLunch), round(mean(percentofWhiteStudents)))
+  # variable inputs which alter the outputs below
+  inputs <- reactive({
+    input$elem.key.table
+    input$middle.key.table
+    input$high.key.table
+    input$african.american.percentage.key.table
+    input$rank.key.table
   })
   
+  # creates table to display filtered by input sliders and checkboxes
+  output$seattle_table <- renderTable({
+    #selects appropriate filters and filter specified columns by the values in the input sliders
+    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+                                      percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
+      filter((schoolLevel == "Elementary" & input$elem.key.table) | 
+               (schoolLevel == "Middle" & input$middle.key.table) | 
+               (schoolLevel == "High" & input$high.key.table)) %>%
+      filter(input$african.american.percentage.key.table[1] <= percentofAfricanAmericanStudents & 
+               input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
+      filter(input$rank.key.table[1] <= rankStatewidePercentage & 
+               input$rank.key.table[2] >= rankStatewidePercentage)
+    return(df.public.schools.table)
+    
+  })
+  
+  # returns the average rank of all of the selected schools
+  output$school_avg_rank <- renderText({
+    #selects appropriate filters and filter specified columns by the values in the input sliders
+    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+                                      percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
+      filter((schoolLevel == "Elementary" & input$elem.key.table) | 
+               (schoolLevel == "Middle" & input$middle.key.table) | 
+               (schoolLevel == "High" & input$high.key.table)) %>%
+      filter(input$african.american.percentage.key.table[1] <= percentofAfricanAmericanStudents & 
+               input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
+      filter(input$rank.key.table[1] <= rankStatewidePercentage & 
+               input$rank.key.table[2] >= rankStatewidePercentage)
+    return(mean(df.public.schools.table[,7], na.rm = TRUE)) 
+  })
+  
+  # returns the average percent of free and reduced lunches for all selected schools
+  output$school_avg_pfdl <- renderText({
+    #selects appropriate filters and filter specified columns by the values in the input sliders
+    df.public.schools.table <- select(df.public.schools, NAME, schoolLevel, numberOfStudents, percentFreeDiscLunch, 
+                                      percentofAfricanAmericanStudents, pupilTeacherRatio, rankStatewidePercentage) %>%
+      filter((schoolLevel == "Elementary" & input$elem.key.table) | 
+               (schoolLevel == "Middle" & input$middle.key.table) | 
+               (schoolLevel == "High" & input$high.key.table)) %>%
+      filter(input$african.american.percentage.key.table[1] <= percentofAfricanAmericanStudents & 
+               input$african.american.percentage.key.table[2] >= percentofAfricanAmericanStudents) %>% 
+      filter(input$rank.key.table[1] <= rankStatewidePercentage & 
+               input$rank.key.table[2] >= rankStatewidePercentage)
+    return(mean(df.public.schools.table[,4], na.rm = TRUE))
+  })
+
+#    zip.summaries <- df.public.schools %>%
+#      group_by(ZIP) %>% 
+#      summarise(round(mean(rankStatewidePercentage, na.rm = TRUE)), round(mean(percentofAfricanAmericanStudents)), mean(percentFreeDiscLunch), round(mean(percentofWhiteStudents)))
+
 }
 
 #creates the server out of the server function
