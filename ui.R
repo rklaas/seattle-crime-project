@@ -1,19 +1,20 @@
 library("shiny")
 library("leaflet")
+library("plotly")
 
 
-ui <- fluidPage(
+ui <- fluidPage(theme = "bootstrap.min.css",
   titlePanel("School Data"), 
   
-  strong("Navigate through the report"),
+  h5("Navigate through the report"),
   
   column(12,p(HTML("<a href='#seattle_map'>View Map Data</a>"))),
   column(12,p(HTML("<a href='#seattle_plot'>View Plot Data</a>"))),
-  column(12,p(HTML("<a href='#seattle_table'>View Summary Tables and Analysis</a>"))),
+  column(12,p(HTML("<a href='#seattle_table'>View Summary Tables and Analysis</a> <br> "))),
   
-  h3(strong("Map Section")),
+  h3("Map Section"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -30,7 +31,7 @@ ui <- fluidPage(
       
       strong('Map Settings'),
       
-      checkboxInput("show.schools.key", "Show School Locations?", TRUE),
+      checkboxInput("show.schools.key", "Show School Locations?", FALSE),
       checkboxInput("show.heatmap.key", "Show Heatmap?", TRUE),
       
       strong('Filter schools:'),
@@ -41,22 +42,31 @@ ui <- fluidPage(
       
       br(),
       
-      sliderInput('african.american.percentage.key', label = '% of African American Students',
-                  value = c(0, 100),
+      sliderInput('free.reduced.lunch.percentage.key', label = '% of Free/Reduced Lunch Students',
+                  value = c(0, 85),
                   min = 0,
-                  max = 60)
+                  max = 85,
+                  step = 3,
+                  animate = animationOptions(interval = 1600)),
+      
+      br(),
+      
+      textInput("school.search.key", label = "Search for a school", value = "")
+      
+      #Search for a school
     ),
     
     mainPanel( # sets the tabs in the main panel
-      leafletOutput("seattle_map")
-
+      
+      #leafletOutput("seattle_map")
+      leafletOutput("seattle_map",width="100%",height="700px")
     )
     
   ),
   
-  h3(strong("Plot Section")),
+  h3("Plot Section"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -74,20 +84,20 @@ ui <- fluidPage(
       br(),
       
       selectInput("x.var.key", "X Axis:", selected = "% African American Students", 
-                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch', "Pupil teacher ratio" = "pupilTeacherRatio")),
+                  c("School Rank" = 'rankStatewidePercentage' , "% African American Students" = 'percentofAfricanAmericanStudents', "% Asian American Students" = 'percentofAsianStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch')),
       
       selectInput("y.var.key", "Y Axis:",  selected = "School Rank", 
-                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch', "Pupil teacher ratio" = "pupilTeacherRatio"))
+                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% Asian American Students" = 'percentofAsianStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch'))
     ),
     
     mainPanel( # sets the tabs in the main panel
-      #plotOutput("seattle_plot")
+      plotlyOutput("seattle_plot")
     )
   ),
   
-  h3(strong("Summary tables and worst schools analysis")),
+  h3("Summary tables and worst schools analysis"),
   
-  h5("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
+  p("Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
      Large block of text to take up space and test the 'jumping to element by click'. This text will be repeated 9 times to take up space.
@@ -122,8 +132,10 @@ ui <- fluidPage(
     ),
     
     mainPanel( # sets the tabs in the main panel
+
       
       tableOutput("seattle_table")
+
 
     )
     
