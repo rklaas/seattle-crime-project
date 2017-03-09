@@ -1,5 +1,6 @@
 library("shiny")
 library("leaflet")
+library("plotly")
 
 
 ui <- fluidPage(theme = "bootstrap.min.css",
