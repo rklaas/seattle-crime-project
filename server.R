@@ -11,10 +11,18 @@ server <- function(input, output) {
   
   # For the map
   public.schools.filtered <- reactive({
-    filter(df.public.schools, (schoolLevel == "Elementary" & input$elem.key) | (schoolLevel == "Middle" & input$middle.key) | (schoolLevel == "High" & input$high.key)) %>% 
-      filter(input$african.american.percentage.key[1] <= percentofAfricanAmericanStudents & input$african.american.percentage.key[2] >= percentofAfricanAmericanStudents) 
+    df.schools.searched <- df.public.schools[grep(tolower(input$school.search.key), tolower(df.public.schools$NAME)),]
+    
+    filter(df.schools.searched, (schoolLevel == "Elementary" & input$elem.key) | (schoolLevel == "Middle" & input$middle.key) | (schoolLevel == "High" & input$high.key)) %>% 
+      filter(input$african.american.percentage.key[1] <= percentofAfricanAmericanStudents & input$african.american.percentage.key[2] >= percentofAfricanAmericanStudents)  
+    
+    return(df.schools.searched)
   })
-  
+
+test <- df.public.schools %>% 
+  filter(SCHOOL, contains("g"))
+
+    
   pal <- colorQuantile("RdBu", df.public.schools$rankStatewidePercentage, n = 7)
   
   # plots the map of seattle
@@ -44,7 +52,7 @@ server <- function(input, output) {
   })
   
   axis.names <- reactive({
-    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio")
+    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", "% Asian American Students" = 'percentofAsianStudents')
     
     x.name <- axis.names.list[[input$x.var.key]]
     y.name <- axis.names.list[[input$y.var.key]]
@@ -58,7 +66,6 @@ server <- function(input, output) {
                  hoverinfo = 'text',
                  alpha = 0.8,
                  size = ~numberOfStudents,
-                 color = ~get(input$color.key),
                  text = ~paste0('School: ', SCHOOL, 
                                 '</br>', axis.names()[1], ': ', get(input$x.var.key), "%" , 
                                 '</br>', axis.names()[2], ': ', get(input$y.var.key), "%" ,

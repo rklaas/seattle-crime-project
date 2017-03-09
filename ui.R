@@ -46,11 +46,18 @@ ui <- fluidPage(theme = "bootstrap.min.css",
                   min = 0,
                   max = 60,
                   step = 3,
-                  animate = animationOptions(interval = 1600))
+                  animate = animationOptions(interval = 1600)),
+      
+      br(),
+      
+      textInput("school.search.key", label = "Search for a school", value = "")
+      
+      #Search for a school
     ),
     
     mainPanel( # sets the tabs in the main panel
-      leafletOutput("seattle_map")
+      #leafletOutput("seattle_map")
+      leafletOutput("seattle_map",width="100%",height="700px")
     )
     
   ),
@@ -75,13 +82,10 @@ ui <- fluidPage(theme = "bootstrap.min.css",
       br(),
       
       selectInput("x.var.key", "X Axis:", selected = "% African American Students", 
-                  c("School Rank" = 'rankStatewidePercentage' , "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch')),
+                  c("School Rank" = 'rankStatewidePercentage' , "% African American Students" = 'percentofAfricanAmericanStudents', "% Asian American Students" = 'percentofAsianStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch')),
       
       selectInput("y.var.key", "Y Axis:",  selected = "School Rank", 
-                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch')),
-      
-      selectInput("color.key", "Color by:",  selected = '% Free/Disc Lunch', 
-                  c("None" = 'isPrivate', "School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch', "Pupil teacher ratio" = "pupilTeacherRatio"))
+                  c("School Rank" = 'rankStatewidePercentage', "% African American Students" = 'percentofAfricanAmericanStudents', "% Asian American Students" = 'percentofAsianStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch'))
     ),
     
     mainPanel( # sets the tabs in the main panel
