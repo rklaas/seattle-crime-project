@@ -84,7 +84,7 @@ ui <- navbarPage("School Report",
                                           max = 60),
                               
                               # displays average school rank
-                              h4("Average school rank: "), h4(textOutput("school_avg_rank")),
+                              h4("Average school rank: "), h4(textOutput("school_avg_rank")), 
                               
                               # slider to adjust the min and max rank of the schools viewed in the table
                               sliderInput('rank.key.table', label = 'School Rank',
