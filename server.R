@@ -43,17 +43,36 @@ server <- function(input, output) {
     return(m)  # Print the map
   })
   
+  axis.names <- reactive({
+    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio")
+    x.name <- axis.names.list[[input$x.var.key]]
+    y.name <- axis.names.list[[input$y.var.key]]
+    return(c(x.name, y.name))
+  })
+  
   # plots graph that the x and y axis can be changed
-  output$seattle_plot <- renderPlot({ 
-    x.label <- gsub("([[:upper:]][[:lower:]])", "\\2 \\1", input$x.var.key)
-    y.label <- gsub("([[:upper:]][[:lower:]])", "\\2 \\1", input$y.var.key)
-    p <- ggplot(data = public.schools.filtered())+
-      geom_point(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key), text = SCHOOL)) +
-      geom_smooth(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key))) +
-      labs(x = x.label, y = y.label)
-    #p <- ggplotly(p)    
-    #plot_ly(df.public.schools, x = ~percentofWhiteStudents, y = ~percentFreeDiscLunch)  
+  output$seattle_plot <- renderPlotly({ 
+    p <- plot_ly(filter(df.public.schools, !is.na(RankStatewidePercentage)), x = ~get(input$x.var.key), y = ~get(input$y.var.key), type = 'scatter', mode = 'markers',
+                 hoverinfo = 'text',
+                 alpha = 0.8,
+                 size = ~numberOfStudents,
+                 color = ~get(input$color.key),
+                 text = ~paste0('School: ', SCHOOL, 
+                                '</br>', axis.names()[1], ': ', get(input$x.var.key), "%" , 
+                                '</br>', axis.names()[2], ': ', get(input$y.var.key), "%" ,
+                                '</br> (School size:', numberOfStudents, ' students)')) %>% 
+      layout(xaxis = list(title = axis.names()[1]), yaxis = list(title = axis.names()[2]))
+    p <- ggplotly(p)
     return(p)
+    
+    
+     x.label <- gsub("([[:upper:]][[:lower:]])", "\\2 \\1", input$x.var.key)
+     y.label <- gsub("([[:upper:]][[:lower:]])", "\\2 \\1", input$y.var.key)
+    # p <- ggplot(data = public.schools.filtered())+
+    #   geom_point(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key), text = SCHOOL)) +
+    #   geom_smooth(mapping = aes(x = get(input$x.var.key), y = get(input$y.var.key))) +
+    #   labs(x = x.label, y = y.label)
+    # return(p)
   })
   
   output$seattle_table <- renderTable({
