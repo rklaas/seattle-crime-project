@@ -11,10 +11,9 @@ server <- function(input, output) {
   
   # For the map
   public.schools.filtered <- reactive({
-    df.schools.searched <- df.public.schools[grep(tolower(input$school.search.key), tolower(df.public.schools$NAME)),]
-    
-    filter(df.schools.searched, (schoolLevel == "Elementary" & input$elem.key) | (schoolLevel == "Middle" & input$middle.key) | (schoolLevel == "High" & input$high.key)) %>% 
-      filter(input$african.american.percentage.key[1] <= percentofAfricanAmericanStudents & input$african.american.percentage.key[2] >= percentofAfricanAmericanStudents)  
+    df.schools.searched <- df.public.schools[grep(tolower(input$school.search.key), tolower(df.public.schools$NAME)),] %>% #Look up schools with matching strings
+      filter((schoolLevel == "Elementary" & input$elem.key) | (schoolLevel == "Middle" & input$middle.key) | (schoolLevel == "High" & input$high.key)) %>% #Filter by school level
+      filter(input$free.reduced.lunch.percentage.key[1] <= percentFreeDiscLunch & input$free.reduced.lunch.percentage.key[2] >= percentFreeDiscLunch) #Fiter by # of African Americans
     
     return(df.schools.searched)
   })
@@ -52,7 +51,7 @@ test <- df.public.schools %>%
   })
   
   axis.names <- reactive({
-    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", "% Asian American Students" = 'percentofAsianStudents')
+    axis.names.list <- list("rankStatewidePercentage" = "% of Schools this ranked above", 'percentofAfricanAmericanStudents' = "% African American Students", 'percentofWhiteStudents' = "% White Students", 'percentFreeDiscLunch' = '% Free/Disc Lunch', "pupilTeacherRatio" = "Pupil teacher ratio", 'percentofAsianStudents' = "% Asian American Students")
     
     x.name <- axis.names.list[[input$x.var.key]]
     y.name <- axis.names.list[[input$y.var.key]]

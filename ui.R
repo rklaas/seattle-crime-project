@@ -30,7 +30,7 @@ ui <- fluidPage(theme = "bootstrap.min.css",
       
       strong('Map Settings'),
       
-      checkboxInput("show.schools.key", "Show School Locations?", TRUE),
+      checkboxInput("show.schools.key", "Show School Locations?", FALSE),
       checkboxInput("show.heatmap.key", "Show Heatmap?", TRUE),
       
       strong('Filter schools:'),
@@ -41,10 +41,10 @@ ui <- fluidPage(theme = "bootstrap.min.css",
       
       br(),
       
-      sliderInput('african.american.percentage.key', label = '% of African American Students',
-                  value = c(0, 100),
+      sliderInput('free.reduced.lunch.percentage.key', label = '% of Free/Reduced Lunch Students',
+                  value = c(0, 85),
                   min = 0,
-                  max = 60,
+                  max = 85,
                   step = 3,
                   animate = animationOptions(interval = 1600)),
       
