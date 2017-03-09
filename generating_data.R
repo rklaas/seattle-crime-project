@@ -4,8 +4,8 @@ library(jsonlite)
 library(dplyr)
 library(tidyr)
 
-my.app.id <- "10cf371f"
-my.app.key <- "d165caa2032481c7d86594939c275815"
+my.app.id <- #App ID
+my.app.key <- #App key
 
 #Bring in a dataframe of all Seattle schools
 df.public.schools <- read.csv("public_schools.csv", stringsAsFactors = FALSE) %>% 
