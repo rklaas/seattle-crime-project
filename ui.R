@@ -2,7 +2,9 @@ library("shiny")
 library("leaflet")
 library("plotly")
 
-ui <- navbarPage("Segregated Seattle", selected = 'Map',
+ui <- navbarPage("Segregated Seattle", 
+                 theme = "bootstrap.min.css",
+                 selected = 'Map',
                  tabPanel('About',
                           h1('Segregated Seattle:'),
                           h4('Mapping Racial Inequalities With Seattle Schools Data'),
@@ -153,5 +155,3 @@ ui <- navbarPage("Segregated Seattle", selected = 'Map',
                           p("The battle for diversity in education is hard-fought in Seattle and far from over, but it's a vital step in ensuring students of minority can make it through the bottleneck of higher education. Eliminating traces of systemic racism leads to more diverse workspaces (which in turn increases creativity), and a greater diversity of viewpoints presented in fields of all levels.")
                  )
 )
-
-shinyUI(ui)

@@ -141,6 +141,3 @@ server <- function(input, output) {
     return(insight.text)
   })
 }
-
-#creates the server out of the server function
-shinyServer(server)
