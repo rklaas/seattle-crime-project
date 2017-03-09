@@ -1,10 +1,12 @@
 library("shiny")
-library("leaflet")
-library("plotly")
+library("leaflet") #For the school map
+library("plotly") #For the scatterplots
 
 ui <- navbarPage("Segregated Seattle", 
                  theme = "bootstrap.min.css",
-                 selected = 'Map',
+                 selected = 'Map', #Default to the map panel
+                 
+                 #About panel
                  tabPanel('About',
                           h1('Segregated Seattle:'),
                           h4('Mapping Racial Inequalities With Seattle Schools Data'),
@@ -13,6 +15,8 @@ ui <- navbarPage("Segregated Seattle",
                           em('This project was a collaboration between INFO 201 students Ian Wohlers, Roger Klaaskate, and Brandon Kinard')
                           
                  ),
+                 
+                 #Map panel
                  tabPanel("Map",
                           
                           h1('Mapping Seattle School Quality'),
@@ -26,17 +30,20 @@ ui <- navbarPage("Segregated Seattle",
                               
                               strong('Map Settings'),
                               
+                              #Allows the user to hide/show map elements
                               checkboxInput("show.schools.key", "Show School Locations?", FALSE),
                               checkboxInput("show.heatmap.key", "Show Heatmap?", TRUE),
                               
                               strong('Filter schools:'),
                               
+                              #Allows user to filter by school level
                               checkboxInput("elem.key", "Elementary Schools", TRUE),
                               checkboxInput("middle.key", "Middle Schools", TRUE),
                               checkboxInput("high.key", "Highschools", TRUE),
                               
                               br(),
                               
+                              #Allows for filtering of map by African American %
                               sliderInput('african.american.percentage.key', label = '% of African American Students',
                                           value = c(0, 60),
                                           min = 0,
@@ -44,6 +51,7 @@ ui <- navbarPage("Segregated Seattle",
                                           step = 3,
                                           animate = animationOptions(interval = 1600)),
                               
+                              #Allows for filtering of map by free/reduced lunch %
                               sliderInput('free.reduced.lunch.percentage.key', label = '% of Free/Reduced Lunch Students',
                                           value = c(0, 85),
                                           min = 0,
@@ -51,9 +59,8 @@ ui <- navbarPage("Segregated Seattle",
                                           step = 3,
                                           animate = animationOptions(interval = 1600)),
                               
+                              #Allows for searching of schools
                               textInput("school.search.key", label = "Search for a school", value = "")
-                              
-                              #Search for a school
                             ),
                             
                             mainPanel( # sets the tabs in the main panel
@@ -62,6 +69,8 @@ ui <- navbarPage("Segregated Seattle",
                             )
                           )
                  ),
+                 
+                 #Plot panel
                  tabPanel("Plot",
                           h1('Correlations Between Seattle Schools Demographics'),
                           p('This interactive plot provides a sandbox for users to explore correlations in the Seattle Schools dataset. Users are able to customize the plot axis based on a variety of variables (% of Asian/African American/White students, school ranking, and % of student body that utilizes free and reduced lunch). Schools with more students are plotted larger, and every point can be hovered over for more details on that individual school.'),
@@ -73,6 +82,7 @@ ui <- navbarPage("Segregated Seattle",
                               
                               br(),
                               
+                              #Two select inputs for X vars and Y vars respectively (x.var.key and y.var.key)
                               selectInput("x.var.key", "X Axis:", selected = "% African American Students", 
                                           c("School Rank" = 'rankStatewidePercentage' , "% African American Students" = 'percentofAfricanAmericanStudents', "% Hispanic Students" = 'percentofHispanicStudents', "% Asian American Students" = 'percentofAsianStudents', "% White Students" = 'percentofWhiteStudents', '% Free/Disc Lunch' = 'percentFreeDiscLunch')),
                               
@@ -85,6 +95,8 @@ ui <- navbarPage("Segregated Seattle",
                             )
                           )
                  ), 
+                 
+                 #Table panel
                  tabPanel('Table',
                           h1('Summary Statistics Used For Analysis'),
                           
@@ -105,8 +117,6 @@ ui <- navbarPage("Segregated Seattle",
                               their families.'),
 
                           sidebarLayout(  # layout the page in two columns
-                            
-                            
                             
                             sidebarPanel(  
                               # specify content for the "sidebar" column
@@ -146,10 +156,11 @@ ui <- navbarPage("Segregated Seattle",
                           )
                  ),
                  
+                 #Conclusion panel
                  tabPanel('Conclusion',
                           h1('Insights - A Segregated Seattle'),
                           p('From each tab of this report we have learned that certain schools are not being treated with the care that they deserve. From the map tab, we can see that the southern region including South Shore and Rainier Beach in particular stands out an extreme pocket of low-ranking schools and poverty based on the low school ranks and high percent of students on free or discounted lunch. Steps ', em('can'), " be taken though to help mitigate these unfair systemic inequalities found across Seattle. "),
-                          p(textOutput("insights")),
+                          p(textOutput("insights")), #Insert those generated stats for Rainier Beach into a paragraph
                           p("Rainier Beach is also a standout due to its largely successful International Baccalaureate program which is poised to soon be cut, ", a("due to lack of funding", href = "http://www.seattletimes.com/opinion/editorials/more-funding-needed-to-ensure-rainier-beach-high-schools-success/"), " from the city. Funding, of course, is not a panacea for issues of school performance (Garfield Highschool in particular ", a("stands out as an example", href = "http://www.seattletimes.com/education-lab/microcosm-of-the-city-garfield-principal-navigates-racial-divide/"), "of a well-funded shool that still fails to serve minority students), but it's a step in the right direction. Rainier Beach is one of many underfunded schools, along with South Shore and other south Seattle schools."),
                           p("The ", a("Supreme Court's McCleary Decision", href = "http://www.washingtonpolicy.org/publications/detail/overview-of-the-mccleary-decision-on-public-education-funding-and-reform"), " necessitates equal access and funding of schools across Washington. Still, split Washington legislators have shirked on their duties (for 5 years now) in enforcing the decision; ", em("lobbying your senator"), " about the McCleary Decision is a quick way citizens can help to ensure schools like Rainier Beach are provided the resources they need to better serve their diverse student bodies."),
                           p("The battle for diversity in education is hard-fought in Seattle and far from over, but it's a vital step in ensuring students of minority can make it through the bottleneck of higher education. Eliminating traces of systemic racism leads to more diverse workspaces (which in turn increases creativity), and a greater diversity of viewpoints presented in fields of all levels.")
