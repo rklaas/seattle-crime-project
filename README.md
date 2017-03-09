@@ -1,7 +1,7 @@
-# Seattle-School-Report
+# Seattle-Segregated: A School Report
 [Link To Shiny Application](https://ianwohlersuw.shinyapps.io/seattle-segregated/)
 
-This report visually shows schools in Seattle in a way that makes it clear where the high and low rated schools are located. It is easy to find common factors that are present in good and bad schools. The goal of this report is to be a call to action for the clearly to recognize and do something about the schools that clearly aren't getting the attention that they deserve.
+This report visually shows schools in Seattle in a way that makes it clear where the high and low rated schools are located. We found many common factors that are present within good schools versus bad schools, particularly along racial and geographic divides. The goal of this report is to be a call to action for awareness of the McCleary decision and a tool for activists to clearly demonstrate traces of racism that still exist in Seattle today.
 
 ## Sources
 We used this
